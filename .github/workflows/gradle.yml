@@ -14,6 +14,10 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Container start
+        run: docker-compose up &
+      - name: Waiting for сontainer start
+        run: sleep 30
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Start SUT
@@ -27,7 +31,3 @@ jobs:
         # Для проектов на базе Selenide необходимо добавить параметр для запуска браузера
         # в headless режиме -Dselenide.headless=true, параметр --info должен остаться
         run: ./gradlew test --info
-      - name: Container start
-        run: docker-compose up &
-      - name: Waiting for сontainer start
-        run: sleep 30
