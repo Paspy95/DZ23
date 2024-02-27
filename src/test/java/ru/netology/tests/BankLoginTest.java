@@ -20,7 +20,15 @@ public class BankLoginTest {
     @BeforeEach
     void setUp() {
         loginPage = open("http://localhost:9999", LoginPage.class);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+        Configuration.browserCapabilities = options;
     }
+
 
     @AfterAll
     static void tearDownAll() {
@@ -34,13 +42,6 @@ public class BankLoginTest {
 
     @Test
     void successLogin() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-        Map<String, Object> prefs = new HashMap<String, Object>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        Configuration.browserCapabilities = options;
         var authInfo = DataHelper.getAuthInfoWithTestData();
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
@@ -50,13 +51,6 @@ public class BankLoginTest {
 
     @Test
     void RandomUser() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-        Map<String, Object> prefs = new HashMap<String, Object>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        Configuration.browserCapabilities = options;
         var authInfo = DataHelper.generateRandomUser();
         loginPage.validLogin(authInfo);
         loginPage.verifyErrorNotification("Ошибка! \nНеверно указан логин или пароль");
@@ -64,13 +58,6 @@ public class BankLoginTest {
 
     @Test
     void errorNotificationIfLoginWithExistUserAndRandomVerificationCode() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-        Map<String, Object> prefs = new HashMap<String, Object>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        Configuration.browserCapabilities = options;
         var authInfo = DataHelper.getAuthInfoWithTestData();
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
